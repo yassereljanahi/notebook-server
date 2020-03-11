@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Install [GraalVm](https://www.graalvm.org/docs/getting-started/) by following the instructions. Once the VM installed and configured, you can check the list of available languages by runing Graal Update command :
+Install [GraalVm](https://www.graalvm.org/docs/getting-started/) by following the instructions. Once the GraalVM is installed and configured, you can check the list of available languages by runing Graal Update command :
 
 ```
 $ gu available
