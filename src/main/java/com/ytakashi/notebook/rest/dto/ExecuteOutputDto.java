@@ -3,6 +3,12 @@ package com.ytakashi.notebook.rest.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/**
+ * Execution REST service output.
+ * 
+ * @author Takashi
+ *
+ */
 @JsonInclude(Include.NON_NULL)
 public class ExecuteOutputDto {
 

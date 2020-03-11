@@ -7,6 +7,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/**
+ * Execution REST service input.
+ * 
+ * @author Takashi
+ *
+ */
 @JsonInclude(Include.NON_NULL)
 public class ExecuteInputDto {
 

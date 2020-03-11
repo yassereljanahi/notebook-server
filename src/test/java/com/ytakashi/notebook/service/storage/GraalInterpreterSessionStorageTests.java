@@ -11,14 +11,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ytakashi.notebook.service.bo.GraalInterpreterContext;
-import com.ytakashi.notebook.service.storage.impl.GraalInterpreterSessionStorage;
+import com.ytakashi.notebook.service.storage.impl.GraalSessionStorage;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class GraalInterpreterSessionStorageTests {
 
 	@Autowired
-	private GraalInterpreterSessionStorage sessionStorage;
+	private GraalSessionStorage sessionStorage;
 
 	@Test
 	public void createWithoutKeyTest() {

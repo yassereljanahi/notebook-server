@@ -13,17 +13,23 @@ import org.springframework.stereotype.Service;
 import com.ytakashi.notebook.service.bo.ExecuteInputBo;
 import com.ytakashi.notebook.service.bo.ExecuteOutputBo;
 import com.ytakashi.notebook.service.bo.GraalInterpreterContext;
-import com.ytakashi.notebook.service.exception.ConcurrentSessionException;
+import com.ytakashi.notebook.service.exception.ConcurrentContextModificationException;
 import com.ytakashi.notebook.service.exception.InterpreterException;
 import com.ytakashi.notebook.service.exception.InterpreterTimeoutException;
-import com.ytakashi.notebook.service.storage.impl.GraalInterpreterSessionStorage;
+import com.ytakashi.notebook.service.storage.impl.GraalSessionStorage;
 import com.ytakashi.notebook.util.Constants;
 
+/**
+ * Graal interpreter service based on GraalVM.
+ * 
+ * @author Takashi
+ *
+ */
 @Service
 public class GraalInterpreterService extends BaseInterpreterService {
 
 	@Autowired
-	private GraalInterpreterSessionStorage sessionStorage;
+	private GraalSessionStorage sessionStorage;
 
 	@PostConstruct
 	@Override
@@ -36,51 +42,68 @@ public class GraalInterpreterService extends BaseInterpreterService {
 	@Override
 	public ExecuteOutputBo execute(ExecuteInputBo executionInput) {
 
-		GraalInterpreterContext interpreter = sessionStorage.findOrCreate(executionInput.getSessionId());
+		GraalInterpreterContext interpreterContext = sessionStorage.findOrCreate(executionInput.getSessionId());
 
-		if (interpreter.getLock().tryLock()) {
+		if (interpreterContext.getLock().tryLock()) {
 			try {
-				return executeInstruction(interpreter, executionInput);
+				return executeInstruction(interpreterContext, executionInput);
 			} finally {
-				interpreter.getLock().unlock();
+				interpreterContext.getLock().unlock();
 			}
 		} else {
-			throw new ConcurrentSessionException(Constants.CONCURRENT_EXCEPTION, interpreter.getSessionId(),
-					new Object[] { interpreter.getSessionId() });
+			throw new ConcurrentContextModificationException(Constants.CONCURRENT_EXCEPTION,
+					interpreterContext.getSessionId(), new Object[] { interpreterContext.getSessionId() });
 		}
 	}
 
-	private ExecuteOutputBo executeInstruction(GraalInterpreterContext interpreter, ExecuteInputBo executionInput) {
+	/**
+	 * Execute instruction.
+	 * 
+	 * @param interpreterContext
+	 *            interpreter context
+	 * @param executionInput
+	 *            execution input
+	 * @return execution result
+	 */
+	private ExecuteOutputBo executeInstruction(GraalInterpreterContext interpreterContext,
+			ExecuteInputBo executionInput) {
 
 		ExecuteOutputBo output = new ExecuteOutputBo();
-		output.setSessionId(interpreter.getSessionId());
+		output.setSessionId(interpreterContext.getSessionId());
 
-		Timer timer = startTimer(interpreter);
+		Timer timer = startTimer(interpreterContext);
 		try {
-			interpreter.getContext().eval(executionInput.getInterpreterName(), executionInput.getInstruction());
+			interpreterContext.getContext().eval(executionInput.getLanguage(), executionInput.getInstruction());
 		} catch (PolyglotException e) {
 			if (e.isCancelled()) {
-				throw new InterpreterTimeoutException(Constants.TIMEOUT_EXCEPTION, interpreter.getSessionId(),
-						new Object[] { interpreter.getTimeout() });
+				throw new InterpreterTimeoutException(Constants.TIMEOUT_EXCEPTION, interpreterContext.getSessionId(),
+						new Object[] { interpreterContext.getTimeout() });
 			} else {
-				throw new InterpreterException(e.getMessage(), interpreter.getSessionId());
+				throw new InterpreterException(e.getMessage(), interpreterContext.getSessionId());
 			}
 		} finally {
 			timer.cancel();
 		}
-		output.setResult(new String(interpreter.getOut().toByteArray()));
-		interpreter.getOut().reset();
+		output.setResult(new String(interpreterContext.getOut().toByteArray()));
+		interpreterContext.getOut().reset();
 
 		return output;
 	}
 
-	private Timer startTimer(GraalInterpreterContext interpreter) {
+	/**
+	 * Create and start a new timer task to control interpreter execution timeout.
+	 * 
+	 * @param interpreterContext
+	 *            interpreter context.
+	 * @return timer
+	 */
+	private Timer startTimer(GraalInterpreterContext interpreterContext) {
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			public void run() {
-				sessionStorage.evict(interpreter.getSessionId());
+				sessionStorage.evict(interpreterContext.getSessionId());
 			}
-		}, interpreter.getTimeout());
+		}, interpreterContext.getTimeout());
 		return timer;
 	}
 

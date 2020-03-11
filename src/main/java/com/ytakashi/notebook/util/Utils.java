@@ -12,34 +12,56 @@ import com.ytakashi.notebook.rest.dto.ExecuteInputDto;
 import com.ytakashi.notebook.service.bo.ExecuteInputBo;
 import com.ytakashi.notebook.service.exception.InvalidInputException;
 
+/**
+ * Global utils class
+ * 
+ * @author Takashi
+ *
+ */
 public final class Utils {
 
-	public static ExecuteInputBo parseInput(ExecuteInputDto dto) {
+	/**
+	 * Parse input (Dto) into business object. 
+	 * 
+	 * @param input execution input
+	 * @return
+	 */
+	public static ExecuteInputBo parseInput(ExecuteInputDto input) {
 
 		ExecuteInputBo bo = new ExecuteInputBo();
-		bo.setInterpreterName(dto.getCode().substring(1, dto.getCode().indexOf(Constants.WHITE_SPACE)));
-		String instruction = dto.getCode().substring(dto.getCode().indexOf(Constants.WHITE_SPACE) + 1,
-				dto.getCode().length());
+		bo.setLanguage(input.getCode().substring(1, input.getCode().indexOf(Constants.WHITE_SPACE)));
+		String instruction = input.getCode().substring(input.getCode().indexOf(Constants.WHITE_SPACE) + 1,
+				input.getCode().length());
 		bo.setInstruction(instruction.trim());
-		bo.setSessionId(dto.getSessionId());
+		bo.setSessionId(input.getSessionId());
 
 		return bo;
 
 	}
 
-	public static void validateInput(ExecuteInputDto dto) {
+	/**
+	 * Input validation method.
+	 * 
+	 * @param input execution input
+	 */
+	public static void validateInput(ExecuteInputDto input) {
 
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		Validator validator = factory.getValidator();
 
-		Set<ConstraintViolation<ExecuteInputDto>> violations = validator.validate(dto);
+		Set<ConstraintViolation<ExecuteInputDto>> violations = validator.validate(input);
 
 		if (!violations.isEmpty()) {
-			throw new InvalidInputException(violations.iterator().next().getMessage(), dto.getSessionId());
+			throw new InvalidInputException(violations.iterator().next().getMessage(), input.getSessionId());
 		}
 
 	}
 
+	/**
+	 * Session id generator using UUID.
+	 * 
+	 * @return session id
+	 */
 	public static String generateSessionId() {
 		return UUID.randomUUID().toString();
 	}

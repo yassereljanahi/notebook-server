@@ -13,12 +13,25 @@ import com.ytakashi.notebook.service.InterpreterFacade;
 import com.ytakashi.notebook.service.bo.ExecuteOutputBo;
 import com.ytakashi.notebook.util.Utils;
 
+/**
+ * REST controller for executing statements
+ * 
+ * @author Takashi
+ *
+ */
 @RestController
 public class InterpreterController {
 
 	@Autowired
 	private InterpreterFacade interpreterFacade;
 
+	/**
+	 * Post method for execution instructions
+	 * 
+	 * @param input
+	 *            request body
+	 * @return responseEntity with status code 200 (OK) and result in body.
+	 */
 	@PostMapping("/execute")
 	public ResponseEntity<ExecuteOutputDto> execute(@RequestBody ExecuteInputDto input) {
 

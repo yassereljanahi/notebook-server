@@ -1,5 +1,11 @@
 package com.ytakashi.notebook.util;
 
+/**
+ * Global constant class.
+ * 
+ * @author Takashi
+ *
+ */
 public final class Constants {
 
 	public static final String WHITE_SPACE = " ";

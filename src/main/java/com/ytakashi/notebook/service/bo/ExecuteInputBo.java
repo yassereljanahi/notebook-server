@@ -1,17 +1,24 @@
 package com.ytakashi.notebook.service.bo;
 
+/**
+ * 
+ * Execution input busines object.
+ * 
+ * @author Takashi
+ *
+ */
 public class ExecuteInputBo {
 
-	private String interpreterName;
+	private String language;
 	private String instruction;
 	private String sessionId;
 
-	public String getInterpreterName() {
-		return interpreterName;
+	public String getLanguage() {
+		return language;
 	}
 
-	public void setInterpreterName(String interpreterName) {
-		this.interpreterName = interpreterName;
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	public String getInstruction() {

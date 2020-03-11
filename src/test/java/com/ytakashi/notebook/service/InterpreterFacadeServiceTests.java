@@ -39,7 +39,7 @@ public class InterpreterFacadeServiceTests {
 	public void supportedLanguageTest() {
 
 		ExecuteInputBo inputBo = new ExecuteInputBo();
-		inputBo.setInterpreterName("js");
+		inputBo.setLanguage("js");
 		inputBo.setInstruction("print(1);");
 
 		interpreterFacade.execute(inputBo);
@@ -50,7 +50,7 @@ public class InterpreterFacadeServiceTests {
 	public void unsupportedLanguageTest() {
 
 		ExecuteInputBo inputBo = new ExecuteInputBo();
-		inputBo.setInterpreterName("python");
+		inputBo.setLanguage("python");
 		inputBo.setInstruction("print(1);");
 
 		interpreterFacade.execute(inputBo);

@@ -7,6 +7,12 @@ import org.springframework.stereotype.Service;
 import com.ytakashi.notebook.service.bo.ExecuteInputBo;
 import com.ytakashi.notebook.service.bo.ExecuteOutputBo;
 
+/**
+ * Emoty SQL interpreter service.
+ * 
+ * @author Takashi
+ *
+ */
 @Service
 public class SqlInterpreterService extends BaseInterpreterService {
 

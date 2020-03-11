@@ -13,8 +13,14 @@ import com.ytakashi.notebook.config.ConfigProperties;
 import com.ytakashi.notebook.service.bo.GraalInterpreterContext;
 import com.ytakashi.notebook.util.Utils;
 
+/**
+ * Graal session storage used to store GraalInterpreterContext in memory.
+ * 
+ * @author Takashi
+ *
+ */
 @Service
-public class GraalInterpreterSessionStorage extends BaseSessionStorage<String, GraalInterpreterContext> {
+public class GraalSessionStorage extends BaseSessionStorage<GraalInterpreterContext> {
 
 	@Autowired
 	private ConfigProperties config;
@@ -34,7 +40,7 @@ public class GraalInterpreterSessionStorage extends BaseSessionStorage<String, G
 		interpreter.setSessionId(sessionId);
 		interpreter.setOut(new ByteArrayOutputStream());
 		interpreter.setLock(new ReentrantLock());
-		interpreter.setTimeout(config.getGraalInterpreterTimeout());
+		interpreter.setTimeout(config.getInterpreterTimeout());
 		interpreter.setContext(Context.newBuilder().out(interpreter.getOut()).build());
 
 		getSessionStorage().put(sessionId, interpreter);
@@ -72,7 +78,7 @@ public class GraalInterpreterSessionStorage extends BaseSessionStorage<String, G
 		try {
 			item.getOut().close();
 		} catch (IOException e) {
-			
+
 		}
 	}
 

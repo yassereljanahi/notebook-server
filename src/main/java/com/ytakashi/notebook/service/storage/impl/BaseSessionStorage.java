@@ -4,13 +4,22 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.ytakashi.notebook.service.storage.SessionStorage;
+import com.ytakashi.notebook.service.storage.StorageService;
 
-public abstract class BaseSessionStorage<K, T> implements SessionStorage<K, T> {
+/**
+ * 
+ * This is a base class for all session storages.
+ * 
+ * @author Takashi
+ *
+ * @param <T>
+ *            the type of item object.
+ */
+public abstract class BaseSessionStorage<T> implements StorageService<String, T> {
 
-	private final Map<K, T> sessionStorage = new ConcurrentHashMap<>();
+	private final Map<String, T> sessionStorage = new ConcurrentHashMap<>();
 
-	public Map<K, T> getSessionStorage() {
+	public Map<String, T> getSessionStorage() {
 		return sessionStorage;
 	}
 
@@ -20,12 +29,12 @@ public abstract class BaseSessionStorage<K, T> implements SessionStorage<K, T> {
 	}
 
 	@Override
-	public void evict(K key) {
+	public void evict(String key) {
 		sessionStorage.remove(key);
 	}
 
 	@Override
-	public Optional<T> find(K key) {
+	public Optional<T> find(String key) {
 		if (key != null) {
 			T t = sessionStorage.get(key);
 			if (t != null) {

@@ -24,7 +24,7 @@ import com.ytakashi.notebook.service.bo.ExecuteOutputBo;
 import com.ytakashi.notebook.service.bo.GraalInterpreterContext;
 import com.ytakashi.notebook.service.exception.InterpreterTimeoutException;
 import com.ytakashi.notebook.service.interpreter.impl.GraalInterpreterService;
-import com.ytakashi.notebook.service.storage.impl.GraalInterpreterSessionStorage;
+import com.ytakashi.notebook.service.storage.impl.GraalSessionStorage;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,7 +36,7 @@ public class GraalInterpreterServiceTests {
 	private GraalInterpreterService interpreterService;
 
 	@MockBean
-	private GraalInterpreterSessionStorage sessionStorage;
+	private GraalSessionStorage sessionStorage;
 
 	@Test
 	public void supportedLanguagesTest() {
@@ -57,7 +57,7 @@ public class GraalInterpreterServiceTests {
 		}).when(sessionStorage).evict(SESSION_ID);
 
 		ExecuteInputBo inputBo = new ExecuteInputBo();
-		inputBo.setInterpreterName("js");
+		inputBo.setLanguage("js");
 		inputBo.setInstruction("while(true);");
 		inputBo.setSessionId(SESSION_ID);
 
@@ -120,7 +120,7 @@ public class GraalInterpreterServiceTests {
 	private Future<ExecuteOutputBo> getFuture(ExecutorService executor, String sessionId, String instruction) {
 		return executor.submit(() -> {
 			ExecuteInputBo inputBo = new ExecuteInputBo();
-			inputBo.setInterpreterName("js");
+			inputBo.setLanguage("js");
 			inputBo.setInstruction(instruction);
 			inputBo.setSessionId(sessionId);
 

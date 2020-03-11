@@ -1,5 +1,12 @@
 package com.ytakashi.notebook.service.bo;
 
+/**
+ * 
+ * Execution output business object.
+ * 
+ * @author Takashi
+ *
+ */
 public class ExecuteOutputBo {
 
 	private String result;

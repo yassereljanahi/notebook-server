@@ -5,6 +5,12 @@ import java.util.concurrent.locks.Lock;
 
 import org.graalvm.polyglot.Context;
 
+/**
+ * Graal Interpreter state holder.
+ * 
+ * @author Takashi
+ *
+ */
 public class GraalInterpreterContext {
 
 	private String sessionId;

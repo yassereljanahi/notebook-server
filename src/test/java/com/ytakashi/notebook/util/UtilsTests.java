@@ -46,7 +46,7 @@ public class UtilsTests {
 
 		ExecuteInputBo inputBo = Utils.parseInput(inputDto);
 
-		Assert.assertThat(inputBo.getInterpreterName(), CoreMatchers.equalTo("python"));
+		Assert.assertThat(inputBo.getLanguage(), CoreMatchers.equalTo("python"));
 		Assert.assertThat(inputBo.getInstruction(), CoreMatchers.equalTo("print(a)"));
 		Assert.assertThat(inputBo.getSessionId(), CoreMatchers.equalTo(inputDto.getSessionId()));
 	}
