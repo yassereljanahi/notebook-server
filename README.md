@@ -70,7 +70,7 @@ The API JSON request body :
 ```
 %<interpreter-name><whitespace><code>
 ```
-- sessionId : session id.
+- sessionId : interpreter session id.
 
 
 ### API response body
@@ -87,10 +87,10 @@ The API JSON response body :
 
 - result : the result of the interpretation.
 - error : description of the error if any.
-- sessionId : session id
+- sessionId : interpreter session id.
 - Http status code : 
 	- 200 (OK): returned in case of succes.
-	- 400 (BAD_REQUEST): returned in case of interpretation error, unsupported interpreter.
+	- 400 (BAD_REQUEST): returned in case of interpretation error or unsupported interpreter.
 	- 408 (REQUEST_TIMEOUT): returned in case of execution times out.
 	- 409 (CONFLICT): returned in case of concurrent acces using the same sessionId.
 	- 422 (UNPROCESSABLE_ENTITY): returned in case of invalid request body.
