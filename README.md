@@ -99,7 +99,7 @@ The API JSON response body :
 
 ### API Usage Examples
 
-## Succes case
+#### Succes case
 
 Request body : 
 
@@ -133,7 +133,7 @@ The sessionId can be used in the next request to reload previous state of the in
 }
 ```
 
-## Failure cases
+#### Failure cases
 
 
 
