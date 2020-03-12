@@ -30,7 +30,7 @@ $ git clone https://github.com/yassereljanahi/notebook-server.git
 
 ### Build and Run project
 
-Once the project cloned from the repository, Build and Run the application : 
+Once the project is cloned from the repository, build and run the application : 
 
 ```
 $ mvn spring-boot:run
