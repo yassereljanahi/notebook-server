@@ -66,8 +66,11 @@ The API JSON request body :
 }
 ```
 
-- code : instruction to be executed by the API. It should respect the following format %<interpreter-name><whitespace><code>
-- sessionId : session id
+- code : instruction to be executed by the API. It should respect the following format
+```
+%<interpreter-name><whitespace><code>
+```
+- sessionId : session id.
 
 
 ### API response body
