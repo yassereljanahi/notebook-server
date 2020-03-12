@@ -101,6 +101,8 @@ The API JSON response body :
 
 ### Succes case
 
+Let's call the API to execute a simple javascript declaration of a variable :
+
 Request body : 
 
 ```
@@ -117,7 +119,7 @@ Response body :
     "sessionId": "43043fad-a3b1-4477-9303-7091b85f57cf"
 }
 ```
-The sessionId can be used in the next request to reload the previous state of the interpreter as shown bellow :
+The result is expected to be empty as we are declaring a variable. The sessionId can be used in the next request to reload the previous state of the interpreter as shown bellow :
 
 ```
 {
@@ -133,9 +135,105 @@ The sessionId can be used in the next request to reload the previous state of th
 }
 ```
 
+The result field contains the value of the declared variable in the first request.
+
 ### Failure cases
 
+#### Invalid input request : 
 
+Let's call the API with wrong or empty code field : 
+
+```
+{
+	"code":"%js"
+}
+```
+```
+{
+    "error": "code should respect the following format : %<interpreter-name><whitespace><code>"
+}
+```
+
+#### Unknown interpreter : 
+
+Let's call the API using a language that is not supported by the application : 
+
+```
+{
+	"code":"%php $a=2"
+}
+```
+```
+{
+    "error": "A language with id \"php\" is not supported. Supported languages are [R, python, llvm, js, sql]."
+}
+```
+
+#### Unsupported operation : 
+
+Let's call the API to execute an Sql query : 
+
+```
+{
+	"code":"%sql select * from tab"
+}
+```
+```
+{
+    "error": "Sql interpretor not yet implemented"
+}
+```
+
+#### Concurrent acces : 
+
+Let's call the API with two parallel requests (A and B) using the same sessionId and executing different instructions : 
+
+- Request A :
+
+```
+{
+	"code":"%js a=3;for(i=1;i<3;i++){a=a+i};print(a);",
+	"sessionId": "2af0395f-4c77-4c8b-a0bc-b6bad9afbc4e"
+}
+```
+```
+{
+    "result": "6\n",
+    "sessionId": "2af0395f-4c77-4c8b-a0bc-b6bad9afbc4e"
+}
+```
+
+- Request B :
+
+```
+{
+	"code":"%js a=0;print(a);",
+	"sessionId": "2af0395f-4c77-4c8b-a0bc-b6bad9afbc4e"
+}
+```
+```
+{
+    "error": "Concurrent access with the same sessionId 2af0395f-4c77-4c8b-a0bc-b6bad9afbc4e.",
+    "sessionId": "2af0395f-4c77-4c8b-a0bc-b6bad9afbc4e"
+}
+```
+
+### Execution times out : 
+
+Let's call the API to execute an infinite loop : 
+
+```
+{
+	"code":"%js while(true);",
+	"sessionId": "2af0395f-4c77-4c8b-a0bc-b6bad9afbc4e"
+}
+```
+```
+{
+    "error": "Execution request taking more than 5,000(ms).",
+    "sessionId": "2af0395f-4c77-4c8b-a0bc-b6bad9afbc4e"
+}
+```
 
 ### Built With
 
