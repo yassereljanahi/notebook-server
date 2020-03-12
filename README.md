@@ -1,4 +1,4 @@
-# Project Title
+# Notebook Server
 
 Spring boot notebook server for executing pieces of code based on a specific language. 
 
@@ -52,7 +52,7 @@ $ http://localhost:8080/
 The interpreter API is exposed via Http POST method : 
 
 ```
-/execute
+POST /execute
 ```
 
 ### API request body
@@ -99,9 +99,45 @@ The API JSON response body :
 
 ### API Usage Examples
 
+## Succes case
+
+Request body : 
+
+```
+{
+	"code":"%js a=2"
+}
+```
+
+Response body : 
+
+```
+{
+    "result": "",
+    "sessionId": "43043fad-a3b1-4477-9303-7091b85f57cf"
+}
+```
+The sessionId can be used in the next request to reload previous state of the interpreter :
+
+```
+{
+	"code":"%js print(a)",
+	"sessionId": "43043fad-a3b1-4477-9303-7091b85f57cf"
+}
+```
+
+```
+{
+    "result": "2\n",
+    "sessionId": "43043fad-a3b1-4477-9303-7091b85f57cf"
+}
+```
+
+## Failure cases
 
 
-## Built With
+
+### Built With
 
 * [Spring boot](https://spring.io/projects/spring-boot)
 * [Maven](https://maven.apache.org/)
