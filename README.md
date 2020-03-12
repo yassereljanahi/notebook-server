@@ -97,9 +97,9 @@ The API JSON response body :
 	- 500 (INTERNAL_SERVER_ERROR): returned in case of any unexpected error.
 	- 501 (NOT_IMPLEMENTED): returned in case of unimplemented interpreter.
 
-### API Usage Examples
+## API Usage Examples
 
-#### Succes case
+### Succes case
 
 Request body : 
 
@@ -133,7 +133,7 @@ The sessionId can be used in the next request to reload previous state of the in
 }
 ```
 
-#### Failure cases
+### Failure cases
 
 
 
