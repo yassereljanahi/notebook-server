@@ -117,7 +117,7 @@ Response body :
     "sessionId": "43043fad-a3b1-4477-9303-7091b85f57cf"
 }
 ```
-The sessionId can be used in the next request to reload previous state of the interpreter :
+The sessionId can be used in the next request to reload the previous state of the interpreter as shown bellow :
 
 ```
 {
